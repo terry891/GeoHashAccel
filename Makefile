@@ -20,5 +20,6 @@ all:
 	gcc geohash_test.c -o geohash_test.o -c
 	gcc -o exegeo geohash.o geohash_test.o
 	rm geohash.o geohash_test.o
-	chmod 777 exegeo
+	chmod +x exegeo
+	echo "\n\n"
 	./exegeo

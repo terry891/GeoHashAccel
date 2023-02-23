@@ -81,7 +81,7 @@ void checkNeighbors(char** neighbors, char** expectedNeighbors) {
 void encoder_tester(int n, int precision){
     srand(time(NULL));
     printf("Encoder\n");
-    for (int i; i < n; i++){
+    for (int i = 0; i < n; i++){
         float random_long, random_lat;
         random_long = (float)rand()/RAND_MAX * 360 - 180;
         random_lat =  (float)rand()/RAND_MAX * 180 - 90;
