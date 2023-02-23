@@ -22,4 +22,4 @@ all:
 	rm geohash.o geohash_test.o
 	chmod +x exegeo
 	echo "\n\n"
-	./exegeo
+	time ./exegeo

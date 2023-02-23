@@ -78,16 +78,23 @@ void checkNeighbors(char** neighbors, char** expectedNeighbors) {
             printf("Error: Expected hash = %s at index %i. (%s)\n", expectedNeighbors[i], i, neighbors[i]);
 }
 
-void encoder_tester(int n, int precision){
+void encoder_tester(int n, int precision, int isPrint){
     srand(time(NULL));
-    printf("Encoder\n");
+    if (isPrint)
+        printf("Encoder: \n");
+    
+    clock_t start = clock();
     for (int i = 0; i < n; i++){
         float random_long, random_lat;
         random_long = (float)rand()/RAND_MAX * 360 - 180;
         random_lat =  (float)rand()/RAND_MAX * 180 - 90;
         char* hash = geohash_encode(random_lat, random_long, precision);
-        printf("Test: %d, Hash: %s, Lat: %.3f, Long: %.3f\n", i, hash, random_lat, random_long);
+        if (isPrint)
+            printf("Test: %d, Hash: %s, Lat: %.3f, Long: %.3f\n", i, hash, random_lat, random_long);
     }
+    clock_t end = clock();
+    double cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("Encoder time taken: %.3fms\n", cpu_time_used * 1000);
 
     // char* hash = geohash_encode(42.60498046875, -5.60302734375, 5);
     // checkHashes(hash, "ezs42");
@@ -99,12 +106,14 @@ void encoder_tester(int n, int precision){
     // checkHashes(hash, "9xj5sm");
 }
 
-void decoder_tester(int n, int precision){
+void decoder_tester(int n, int precision, int isPrint){
     srand(time(NULL));
-    printf("Decoder\n");
+    if (isPrint)
+        printf("Decoder:\n");
     static char char_map[32] =  "0123456789bcdefghjkmnpqrstuvwxyz";    
     char random_hash[precision + 1];
-
+    
+    clock_t start = clock();
     for (int i = 0; i < n; i++){
         for (int j = 0; j < precision; j++) {
             int random_index = rand() % (sizeof(char_map) - 1);
@@ -112,8 +121,12 @@ void decoder_tester(int n, int precision){
         }
         random_hash[precision] = '\0';
         GeoCoord coord = geohash_decode(random_hash);
-        printf("Test: %d, Hash: %s, Lat: %.3f, Long: %.3f\n", i, random_hash, coord.latitude, coord.longitude);
+        if (isPrint)
+            printf("Test: %d, Hash: %s, Lat: %.3f, Long: %.3f\n", i, random_hash, coord.latitude, coord.longitude);
     }
+    clock_t end = clock();
+    double cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("Decoder time taken: %.3fms\n", cpu_time_used * 1000);
 
     // GeoCoord coord = geohash_decode("ezs42");
     // GeoCoord expectedCoord = {42.60498046875, -5.60302734375, 42.626953125, -5.5810546875, 42.5830078125, -5.625};
@@ -145,13 +158,12 @@ void neighbor_test(){
 int main() {
 
     int iteration = 10;
-    int precision = 12;
+    int precision = 40;
+    int isPrint = 0;
 
-    // Encoder
-    encoder_tester(iteration, precision);
-
-    // Decoder
-    decoder_tester(iteration, precision);
+    printf("Number of data: %d, Precision: %d\n", iteration, precision);
+    encoder_tester(iteration, precision, isPrint);
+    decoder_tester(iteration, precision, isPrint);
 
     return 0;
 }

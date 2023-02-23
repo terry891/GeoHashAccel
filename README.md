@@ -4,7 +4,7 @@ Accelerator for GeoHash
 
 
 To run, use command\
-`gcc geohash.c -o geohash.o -c; gcc geohash_test.c -o geohash_test.o -c; gcc -o exegeo geohash.o geohash_test.o; ./exegeo`
+`gcc geohash.c -o geohash.o -c; gcc geohash_test.c -o geohash_test.o -c; gcc -o exegeo geohash.o geohash_test.o; time ./exegeo`
 
 
 
